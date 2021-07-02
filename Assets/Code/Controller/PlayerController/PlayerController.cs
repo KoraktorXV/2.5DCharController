@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private CapsuleCollider colider;
+    [SerializeField]
+    private Rigidbody rigidbody;
+
+    private MovementBehavior movementBehavior;
+
+    private void Awake()
     {
-        
+        movementBehavior = new MovementBehavior(rigidbody);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateMovementBehavior(MovementInformation movementInfo)
     {
-        
+        movementBehavior.ApplyMovement(movementInfo);
     }
 }
