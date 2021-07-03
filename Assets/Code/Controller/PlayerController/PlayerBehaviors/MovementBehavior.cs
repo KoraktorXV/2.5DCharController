@@ -5,14 +5,12 @@ using UnityEngine;
 public class MovementBehavior
 {
     private Rigidbody rigidbody;
+    private MovementAttributes attributes;
 
-    private float maxVelocety = 5.0f;
-    private float movementForce = 100.0f;
-    private float jumpForce = 2000.0f;
-
-    public MovementBehavior(Rigidbody iniRigidbody)
+    public MovementBehavior(Rigidbody iniRigidbody, MovementAttributes iniAttributes)
     {
         rigidbody = iniRigidbody;
+        attributes = iniAttributes;
     }
 
     public void ApplyMovement(MovementInformation moveInfo)
@@ -26,22 +24,22 @@ public class MovementBehavior
     {
         if (moveInfo.isJumping)
         {
-            rigidbody.AddForce(Vector3.up * jumpForce);
+            rigidbody.AddForce(Vector3.up * attributes.jumpForce);
 
             moveInfo.isJumping = false;
         }
 
         if (moveInfo.movementDir.magnitude > 0)
         {
-            rigidbody.AddForce(moveInfo.movementDir.normalized * movementForce);
+            rigidbody.AddForce(moveInfo.movementDir.normalized * attributes.movementForce);
         }
     }
 
     private void LimitVelocety()
     {
-        if (rigidbody.velocity.magnitude > maxVelocety)
+        if (rigidbody.velocity.magnitude > attributes.maxVelocety)
         {
-            rigidbody.velocity = rigidbody.velocity.normalized * maxVelocety;
+            rigidbody.velocity = rigidbody.velocity.normalized * attributes.maxVelocety;
         }
     }
 }

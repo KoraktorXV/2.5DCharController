@@ -8,12 +8,13 @@ public class PlayerController : MonoBehaviour
     private CapsuleCollider colider;
     [SerializeField]
     private Rigidbody rigidbody;
-
+    [SerializeField]
+    private MovementAttributes attributes;
     private MovementBehavior movementBehavior;
 
     private void Awake()
     {
-        movementBehavior = new MovementBehavior(rigidbody);
+        movementBehavior = new MovementBehavior(rigidbody, attributes);
     }
 
     public void UpdateMovementBehavior(MovementInformation movementInfo)
