@@ -6,11 +6,13 @@ public class MovementBehavior
 {
     private Rigidbody rigidbody;
     private MovementAttributes attributes;
+    private PlayerController ownController;
 
-    public MovementBehavior(Rigidbody iniRigidbody, MovementAttributes iniAttributes)
+    public MovementBehavior(Rigidbody iniRigidbody, MovementAttributes iniAttributes, PlayerController iniOwnController)
     {
         rigidbody = iniRigidbody;
         attributes = iniAttributes;
+        ownController = iniOwnController;
     }
 
     public void ApplyMovement(MovementInformation moveInfo)

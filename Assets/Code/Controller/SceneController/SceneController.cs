@@ -38,7 +38,7 @@ public class SceneController : MonoBehaviour
     {
         if (playerController != null)
         {
-            playerController.UpdateMovementBehavior(inputController.GetMovementInfo());
+            playerController.UpdatePlayerController(inputController.GetMovementInfo());
         }        
     }
 
