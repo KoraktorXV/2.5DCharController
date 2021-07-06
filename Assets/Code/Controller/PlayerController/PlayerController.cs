@@ -18,9 +18,11 @@ public class PlayerController : MonoBehaviour
     private float maxHoverDistance = 0.25f;
 
     private MovementBehavior movementBehavior;
+    private MovementInformation lastMovementInformation;
     private bool isInAir = false;
     private bool isOutsideDetectionRange = false;
     private float distanceToGrund = 0.0f;
+    private Vector3 grundHitPoint = new Vector3(); 
 
     private void Awake()
     {
@@ -29,13 +31,14 @@ public class PlayerController : MonoBehaviour
 
     public void UpdatePlayerController(MovementInformation movementInfo)
     {
-        UpdateController();
+        UpdateController(movementInfo);
         movementBehavior.ApplyMovement(movementInfo);
     }
 
-    private void UpdateController()
+    private void UpdateController(MovementInformation movementInfo)
     {
         UpdateRaycastInfos();
+        lastMovementInformation = new MovementInformation(movementInfo);
         Debug.Log("isOutsideDetectionRange: " + isOutsideDetectionRange + "\ndistanceToGrund: " + distanceToGrund + "\nisInAir: " + isInAir);
     }
 
@@ -48,12 +51,14 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(inAirRay, out hit, maxInAirDistance))
         {
             isOutsideDetectionRange = false;
-            distanceToGrund = (hit.point - physiksUtilityObj.position).magnitude;
+            grundHitPoint = hit.point;
+            distanceToGrund = (grundHitPoint - physiksUtilityObj.position).magnitude;
             isInAir = distanceToGrund > maxHoverDistance ? true : false;
         }
         else
         {
             isInAir = true;
+            grundHitPoint = Vector3.zero;
             distanceToGrund = float.MinValue;
             isOutsideDetectionRange = true;
         }
@@ -73,6 +78,16 @@ public class PlayerController : MonoBehaviour
     public float GetDistaceToGrund()
     {
         return distanceToGrund;
+    }
+
+    public float GetMaxHoverDistance()
+    {
+        return maxHoverDistance;
+    }
+
+    public Vector3 GetGrundHitPoint()
+    {
+        return grundHitPoint;
     }
 
     private void OnDrawGizmos()
