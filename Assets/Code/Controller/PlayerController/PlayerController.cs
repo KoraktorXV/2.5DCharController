@@ -21,4 +21,14 @@ public class PlayerController : MonoBehaviour
     {
         movementBehavior.ApplyMovement(movementInfo);
     }
+
+    private void OnDrawGizmos()
+    {
+        if (rigidbody)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, transform.position + rigidbody.velocity * Time.fixedDeltaTime * 5);
+
+        }
+    }
 }

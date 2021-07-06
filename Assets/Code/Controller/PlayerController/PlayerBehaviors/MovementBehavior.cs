@@ -16,22 +16,27 @@ public class MovementBehavior
     public void ApplyMovement(MovementInformation moveInfo)
     {
         ApplyForces(moveInfo);
-
-        LimitVelocety();
     }
 
     private void ApplyForces(MovementInformation moveInfo)
     {
         if (moveInfo.isJumping)
         {
-            rigidbody.AddForce(Vector3.up * attributes.jumpForce);
+             rigidbody.AddForce(Vector3.up * attributes.jumpForce);
 
             moveInfo.isJumping = false;
         }
 
-        if (moveInfo.movementDir.magnitude > 0)
+        Vector3 horizontalVelocity = new Vector3(rigidbody.velocity.x, 0, 0);
+        bool isMoveDirInVelocetyDir = Vector3.Dot(horizontalVelocity.normalized, moveInfo.inputMovementDir) == 1;
+        bool isHorizontalVelocityToBig = horizontalVelocity.magnitude > attributes.maxVelocety;
+
+        if (moveInfo.inputMovementDir.magnitude > 0)
         {
-            rigidbody.AddForce(moveInfo.movementDir.normalized * attributes.movementForce);
+            if (!isHorizontalVelocityToBig || (isHorizontalVelocityToBig && !isMoveDirInVelocetyDir))
+            {
+                rigidbody.AddForce(moveInfo.inputMovementDir.normalized * attributes.movementForce);
+            }            
         }
     }
 

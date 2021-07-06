@@ -13,18 +13,18 @@ public class InputController
 
     private void UpdateMovementDirection()
     {
-        currentMovementInfo.movementDir = Vector3.zero;
+        currentMovementInfo.inputMovementDir = Vector3.zero;
 
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
-            currentMovementInfo.movementDir += Vector3.left;
+            currentMovementInfo.inputMovementDir += Vector3.left;
         }
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
-            currentMovementInfo.movementDir += Vector3.right;
+            currentMovementInfo.inputMovementDir += Vector3.right;
         }
 
-        currentMovementInfo.movementDir.Normalize();
+        currentMovementInfo.inputMovementDir.Normalize();
     }
 
     private void UpdateJumpingInfo()
