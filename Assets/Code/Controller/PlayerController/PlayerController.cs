@@ -12,10 +12,6 @@ public class PlayerController : MonoBehaviour
     private MovementAttributes attributes;
     [SerializeField]
     private Transform physiksUtilityObj;
-    [SerializeField]
-    private float maxInAirDistance = 0.5f;
-    [SerializeField]
-    private float maxHoverDistance = 0.25f;
 
     private MovementBehavior movementBehavior;
     private MovementInformation lastMovementInformation;
@@ -48,12 +44,12 @@ public class PlayerController : MonoBehaviour
         RaycastHit hit;
         Ray inAirRay = new Ray(physiksUtilityObj.position, Vector3.down);
 
-        if (Physics.Raycast(inAirRay, out hit, maxInAirDistance))
+        if (Physics.Raycast(inAirRay, out hit, attributes.inAirRayCastLenght))
         {
             isOutsideDetectionRange = false;
             grundHitPoint = hit.point;
             distanceToGrund = (grundHitPoint - physiksUtilityObj.position).magnitude;
-            isInAir = distanceToGrund > maxHoverDistance ? true : false;
+            isInAir = distanceToGrund < attributes.hoverDistancToGrund + attributes.hoverDistancDelta ? false : true;
         }
         else
         {
@@ -80,11 +76,6 @@ public class PlayerController : MonoBehaviour
         return distanceToGrund;
     }
 
-    public float GetMaxHoverDistance()
-    {
-        return maxHoverDistance;
-    }
-
     public Vector3 GetGrundHitPoint()
     {
         return grundHitPoint;
@@ -92,13 +83,13 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (rigidbody)
+        if (rigidbody && attributes)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawLine(transform.position, transform.position + rigidbody.velocity * Time.fixedDeltaTime * 5);
             
             Gizmos.color = Color.green;
-            Gizmos.DrawLine(transform.position, transform.position + Vector3.down * maxInAirDistance);
+            Gizmos.DrawLine(transform.position, transform.position + Vector3.down * attributes.inAirRayCastLenght);
 
         }
     }

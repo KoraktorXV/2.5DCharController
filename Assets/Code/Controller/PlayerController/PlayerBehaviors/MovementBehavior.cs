@@ -61,7 +61,13 @@ public class MovementBehavior
 
     private void ApplyHoverForces()
     {
+        if (!isJumping && ownController.GetGrundHitPoint() != Vector3.zero)
+        {
+            Vector3 currentVelocety = rigidbody.velocity;
+            float currentDistanceDelta = ownController.GetDistaceToGrund() - attributes.hoverDistancToGrund;
+            float springForce =  -attributes.springConstant * currentDistanceDelta;
 
-
+            rigidbody.AddForce(Vector3.up * (springForce - rigidbody.velocity.y * attributes.hoverSpringDampener));
+        }
     }
 }
