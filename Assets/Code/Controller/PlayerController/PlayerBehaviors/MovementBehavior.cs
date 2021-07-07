@@ -30,6 +30,7 @@ public class MovementBehavior
         {
             ApplyJumpingForces();
             isJumping = true;
+            ownController.GetPlayerSoundEvents().PlaySound((int) SoundEnum.jump, Camera.main.GetComponent<AudioSource>());
         }
 
         if (isJumping && rigidbody.velocity.y < 0.0f && !ownController.GetIsOutsideDetectionRange())

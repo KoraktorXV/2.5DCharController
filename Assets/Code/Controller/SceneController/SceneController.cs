@@ -15,6 +15,9 @@ public class SceneController : MonoBehaviour
     [SerializeField]
     private Transform playerSpawnPos;
 
+    [SerializeField]
+    private SoundEventSystem soundEvents;
+
     private InputController inputController;
     private CameraController camController;
 

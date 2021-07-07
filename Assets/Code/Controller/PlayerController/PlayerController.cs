@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     private MovementAttributes attributes;
     [SerializeField]
     private Transform physiksUtilityObj;
+    [SerializeField]
+    private SoundEventSystem soundEvents;
 
     private MovementBehavior movementBehavior;
     private MovementInformation lastMovementInformation;
@@ -79,6 +81,11 @@ public class PlayerController : MonoBehaviour
     public Vector3 GetGrundHitPoint()
     {
         return grundHitPoint;
+    }
+
+    public SoundEventSystem GetPlayerSoundEvents()
+    {
+        return soundEvents;
     }
 
     private void OnDrawGizmos()

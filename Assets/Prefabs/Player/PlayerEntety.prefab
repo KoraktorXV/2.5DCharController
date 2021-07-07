@@ -51,8 +51,7 @@ MonoBehaviour:
   rigidbody: {fileID: 3553237832679566408}
   attributes: {fileID: 11400000, guid: 686a2c8aba51152478bea3ca3d30243c, type: 2}
   physiksUtilityObj: {fileID: 4760769144574960648}
-  maxInAirDistance: 0.5
-  maxHoverDistance: 0.25
+  soundEvents: {fileID: 11400000, guid: 452f262e6da7c7946b8ef3150309dc68, type: 2}
 --- !u!136 &338967647619369948
 CapsuleCollider:
   m_ObjectHideFlags: 0
