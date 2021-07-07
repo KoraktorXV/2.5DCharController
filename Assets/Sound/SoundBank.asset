@@ -9,14 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab0fdc48a3e3dee46848904aefc45f9a, type: 3}
-  m_Name: BaseTest
+  m_Script: {fileID: 11500000, guid: 96c8f8731888787489f02e0655386bce, type: 3}
+  m_Name: SoundBank
   m_EditorClassIdentifier: 
-  maxVelocety: 10
-  movementForce: 20
-  inAirRayCastLenght: 0.75
-  jumpForce: 350
-  springConstant: 100
-  hoverDistancToGrund: 0.75
-  hoverDistancDelta: 0.5
-  hoverSpringDampener: 20
+  soundList:
+  - {fileID: 11400000, guid: f3071182d2567cf4d81860ea4fa00e6f, type: 2}

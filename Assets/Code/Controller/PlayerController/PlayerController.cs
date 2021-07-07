@@ -13,14 +13,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform physiksUtilityObj;
     [SerializeField]
-    private float maxInAirDistance = 0.5f;
-    [SerializeField]
-    private float maxHoverDistance = 0.25f;
+    private SoundEventSystem soundEvents;
 
     private MovementBehavior movementBehavior;
+    private MovementInformation lastMovementInformation;
     private bool isInAir = false;
     private bool isOutsideDetectionRange = false;
     private float distanceToGrund = 0.0f;
+    private Vector3 grundHitPoint = new Vector3(); 
 
     private void Awake()
     {
@@ -29,13 +29,14 @@ public class PlayerController : MonoBehaviour
 
     public void UpdatePlayerController(MovementInformation movementInfo)
     {
-        UpdateController();
+        UpdateController(movementInfo);
         movementBehavior.ApplyMovement(movementInfo);
     }
 
-    private void UpdateController()
+    private void UpdateController(MovementInformation movementInfo)
     {
         UpdateRaycastInfos();
+        lastMovementInformation = new MovementInformation(movementInfo);
         Debug.Log("isOutsideDetectionRange: " + isOutsideDetectionRange + "\ndistanceToGrund: " + distanceToGrund + "\nisInAir: " + isInAir);
     }
 
@@ -45,15 +46,17 @@ public class PlayerController : MonoBehaviour
         RaycastHit hit;
         Ray inAirRay = new Ray(physiksUtilityObj.position, Vector3.down);
 
-        if (Physics.Raycast(inAirRay, out hit, maxInAirDistance))
+        if (Physics.Raycast(inAirRay, out hit, attributes.inAirRayCastLenght))
         {
             isOutsideDetectionRange = false;
-            distanceToGrund = (hit.point - physiksUtilityObj.position).magnitude;
-            isInAir = distanceToGrund > maxHoverDistance ? true : false;
+            grundHitPoint = hit.point;
+            distanceToGrund = (grundHitPoint - physiksUtilityObj.position).magnitude;
+            isInAir = distanceToGrund < attributes.hoverDistancToGrund + attributes.hoverDistancDelta ? false : true;
         }
         else
         {
             isInAir = true;
+            grundHitPoint = Vector3.zero;
             distanceToGrund = float.MinValue;
             isOutsideDetectionRange = true;
         }
@@ -75,15 +78,25 @@ public class PlayerController : MonoBehaviour
         return distanceToGrund;
     }
 
+    public Vector3 GetGrundHitPoint()
+    {
+        return grundHitPoint;
+    }
+
+    public SoundEventSystem GetPlayerSoundEvents()
+    {
+        return soundEvents;
+    }
+
     private void OnDrawGizmos()
     {
-        if (rigidbody)
+        if (rigidbody && attributes)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawLine(transform.position, transform.position + rigidbody.velocity * Time.fixedDeltaTime * 5);
             
             Gizmos.color = Color.green;
-            Gizmos.DrawLine(transform.position, transform.position + Vector3.down * maxInAirDistance);
+            Gizmos.DrawLine(transform.position, transform.position + Vector3.down * attributes.inAirRayCastLenght);
 
         }
     }

@@ -31,7 +31,11 @@ public class InputController
     {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow))
         {
-            currentMovementInfo.isJumping = true;
+            currentMovementInfo.isJumpingInput = true;
+        }
+        else
+        {
+            currentMovementInfo.isJumpingInput = false;
         }
     }
 
