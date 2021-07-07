@@ -61,17 +61,7 @@ public class MovementBehavior
 
     private void ApplyHoverForces()
     {
-        if (!isJumping && ownController.GetGrundHitPoint() != Vector3.zero)
-        {
-            Vector3 vectorToGrund = ownController.GetGrundHitPoint() - ownController.transform.position;
 
-            if (vectorToGrund.magnitude > ownController.GetMaxHoverDistance())
-            {
-                Vector3 hoverPos = ownController.transform.position + Vector3.down * ownController.GetMaxHoverDistance();
-                Vector3 VectorToHoverPos = hoverPos - ownController.GetGrundHitPoint();
-                float currentHoverForce = (VectorToHoverPos.y * rigidbody.mass) * (Time.fixedDeltaTime * Time.fixedDeltaTime);
-                rigidbody.AddForce(new Vector3(0, currentHoverForce, 0) + new Vector3(0, -rigidbody.velocity.y * Time.fixedDeltaTime, 0));
-            }
-        }
+
     }
 }
