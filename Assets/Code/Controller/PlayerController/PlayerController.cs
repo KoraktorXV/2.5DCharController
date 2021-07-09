@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform physiksUtilityObj;
     [SerializeField]
+    private PlayerGrafiksController grafiksController;
+    [SerializeField]
     private SoundEventSystem soundEvents;
 
     private MovementBehavior movementBehavior;
