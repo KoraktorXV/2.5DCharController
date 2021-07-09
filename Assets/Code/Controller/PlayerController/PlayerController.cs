@@ -29,10 +29,11 @@ public class PlayerController : MonoBehaviour
         movementBehavior = new MovementBehavior(rigidbody, attributes, this);
     }
 
-    public void UpdatePlayerController(MovementInformation movementInfo)
+public void UpdatePlayerController(MovementInformation movementInfo)
     {
         UpdateController(movementInfo);
         movementBehavior.ApplyMovement(movementInfo);
+        grafiksController.SetFloorPoint(GetGrundHitPoint());
     }
 
     private void UpdateController(MovementInformation movementInfo)
