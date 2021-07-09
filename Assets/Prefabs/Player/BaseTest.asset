@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxVelocety: 10
   movementForce: 20
-  inAirRayCastLenght: 0.75
+  inAirRayCastLenght: 0.5
   jumpForce: 350
   springConstant: 100
-  hoverDistancToGrund: 0.75
-  hoverDistancDelta: 0.5
-  hoverSpringDampener: 20
+  hoverDistancToGrund: 0.5
+  hoverDistancDelta: 0.25
+  hoverSpringDampener: 15
