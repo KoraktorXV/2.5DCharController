@@ -8,7 +8,6 @@ public class MovementInformation
     public bool isJumpingInput = false;
     public MovementInformation()
     {
-
     }
 
     public MovementInformation(MovementInformation iniInfos)

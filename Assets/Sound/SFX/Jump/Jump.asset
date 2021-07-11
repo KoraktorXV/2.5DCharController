@@ -15,7 +15,7 @@ MonoBehaviour:
   ObjectID: 0
   sound:
     clip: {fileID: 8300000, guid: 404395126c3a4fd4a9c21a1a660e0910, type: 3}
-    volume: 1
+    volume: 0.2
     pich: 1
     randPich: 0
     minPichRandRange: 0

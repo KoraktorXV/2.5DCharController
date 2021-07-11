@@ -35,13 +35,18 @@ public class SceneController : MonoBehaviour
     private void Update()
     {
         inputController.UpdateInput();
+
+        if (playerController != null)
+        {
+            playerController.UpdateMovementInfo(inputController.GetMovementInfo());
+        }
     }
 
     private void FixedUpdate()
     {
         if (playerController != null)
         {
-            playerController.UpdatePlayerController(inputController.GetMovementInfo());
+            playerController.UpdatePlayerController();
         }        
     }
 
