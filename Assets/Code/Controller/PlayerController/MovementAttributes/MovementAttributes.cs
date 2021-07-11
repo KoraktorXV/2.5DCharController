@@ -7,6 +7,7 @@ public class MovementAttributes : ScriptableObject
 {
     public float maxVelocety = 105.0f;
     public float movementForce = 20.0f;
+    public float dragConstand = 30.0f;
     //public float accelerationTime = 0.5f;
     //public AnimationCurve accelerationCurve;
     //public float deccelerationTime = 0.5f;

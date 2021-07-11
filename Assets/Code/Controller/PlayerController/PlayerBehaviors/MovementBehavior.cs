@@ -70,6 +70,12 @@ public class MovementBehavior
                 rigidbody.AddForce(moveInfo.inputMovementDir.normalized * attributes.movementForce);
             }
         }
+        else
+        {
+            float dragFactor = (rigidbody.velocity.magnitude / attributes.maxVelocety) * attributes.dragConstand;
+            Vector3 dragForce = -new Vector3(rigidbody.velocity.x, 0, 0).normalized * dragFactor;
+            rigidbody.AddForce(dragForce);
+        }
     }
 
     private void ApplyHoverForces()
