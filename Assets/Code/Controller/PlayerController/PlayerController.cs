@@ -33,7 +33,7 @@ public void UpdatePlayerController(MovementInformation movementInfo)
     {
         UpdateController(movementInfo);
         movementBehavior.ApplyMovement(movementInfo);
-        grafiksController.SetFloorPoint(GetGrundHitPoint());
+        UpdateGraficsController();
     }
 
     private void UpdateController(MovementInformation movementInfo)
@@ -43,6 +43,11 @@ public void UpdatePlayerController(MovementInformation movementInfo)
         Debug.Log("isOutsideDetectionRange: " + isOutsideDetectionRange + "\ndistanceToGrund: " + distanceToGrund + "\nisInAir: " + isInAir);
     }
 
+    private void UpdateGraficsController()
+    {
+        grafiksController.SetFloorPoint(GetGrundHitPoint());
+        grafiksController.SetRunningSpeed(1/attributes.maxVelocety * rigidbody.velocity.magnitude);
+    }
 
     public void UpdateRaycastInfos()
     {

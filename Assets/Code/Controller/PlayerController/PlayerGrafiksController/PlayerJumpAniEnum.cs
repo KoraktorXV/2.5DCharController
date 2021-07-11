@@ -1,4 +1,4 @@
-public enum PlayerAnimationEnum 
+public enum PlayerJumpAniEnum 
 {
     idol = 0,
     jumpingOf = 1,

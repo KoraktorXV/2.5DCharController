@@ -12,14 +12,15 @@ public class PlayerGrafiksController : MonoBehaviour
 
     private float currentRunningSpeed = 0;
 
-    public void SetAnimation(PlayerAnimationEnum aniEnum)
+    public void SetAnimation(PlayerJumpAniEnum aniEnum)
     {
-
+        animator.SetInteger("jumpPhase", (int)aniEnum);
     }
 
     public void SetRunningSpeed(float newRunningSpeed)
     {
         currentRunningSpeed = newRunningSpeed;
+        animator.SetFloat("speed", newRunningSpeed);
     }
 
     public void SetFloorPoint(Vector3 newTarget)
