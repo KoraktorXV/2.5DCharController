@@ -46,10 +46,21 @@ public class MovementBehavior
 
         if (jumpBuffer != null && jumpBuffer.isJumping == false)
         {
-            ApplyJumpingForces();
+            //ApplyJumpingForces();
             jumpBuffer.isJumping = true;
             ownController.GetPlayerSoundEvents().PlaySound((int)SoundEnum.jump, Camera.main.GetComponent<AudioSource>());
-        }                    
+        }
+
+        if (jumpBuffer != null && jumpBuffer.isJumping == true)
+        {
+            if (jumpBuffer.jumpTime < attributes.jumpRaiseTime)
+            {
+                float upVelocety = attributes.jumpRaiseCurve.Evaluate((jumpBuffer.jumpTime / attributes.jumpRaiseTime)) * attributes.maxJumpVelocety;
+                rigidbody.velocity = new Vector3(rigidbody.velocity.x, upVelocety, rigidbody.velocity.z);
+                jumpBuffer.jumpTime += Time.fixedDeltaTime;
+
+            }
+        }
     }
 
     private void ApplyJumpingForces()

@@ -5,6 +5,7 @@ using UnityEngine;
 public class JumpAktion
 {
     public bool isJumping = false;
+    public float jumpTime = 0.0f;
     private float jumpAktionTimeStamp = 0.0f;
 
     public JumpAktion() 
