@@ -98,6 +98,11 @@ public class PlayerController : MonoBehaviour
         return soundEvents;
     }
 
+    public MovementAttributes GetPlayerAttributes()
+    {
+        return attributes;
+    }
+
     private void OnDrawGizmos()
     {
         if (rigidbody && attributes)

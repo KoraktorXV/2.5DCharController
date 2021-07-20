@@ -22,6 +22,7 @@ public class MovementBehavior
 
     public void UpdateMovementInfo(MovementInformation newMoveInfos)
     {
+        attributes = ownController.GetPlayerAttributes();
         moveInfos = newMoveInfos;
 
         if (newMoveInfos.isJumpingInput && jumpBuffer == null)
