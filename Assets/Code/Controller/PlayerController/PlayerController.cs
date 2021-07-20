@@ -98,9 +98,12 @@ public class PlayerController : MonoBehaviour
         return soundEvents;
     }
 
-    public MovementAttributes GetPlayerAttributes()
+    private void OnValidate()
     {
-        return attributes;
+        if (movementBehavior != null)
+        {
+            movementBehavior.SetAttributes(attributes);
+        }
     }
 
     private void OnDrawGizmos()

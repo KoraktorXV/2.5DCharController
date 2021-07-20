@@ -22,7 +22,6 @@ public class MovementBehavior
 
     public void UpdateMovementInfo(MovementInformation newMoveInfos)
     {
-        attributes = ownController.GetPlayerAttributes();
         moveInfos = newMoveInfos;
 
         if (newMoveInfos.isJumpingInput && jumpBuffer == null)
@@ -100,5 +99,10 @@ public class MovementBehavior
 
             rigidbody.AddForce(Vector3.up * (springForce - rigidbody.velocity.y * attributes.hoverSpringDampener));
         }
+    }
+
+    public void SetAttributes(MovementAttributes newAttributes)
+    {
+        attributes = newAttributes;
     }
 }
