@@ -168,6 +168,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerGrafiks
       objectReference: {fileID: 0}
+    - target: {fileID: 9191063199956775737, guid: aff70ed6e1184024a9149a266179bf76, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aff70ed6e1184024a9149a266179bf76, type: 3}
 --- !u!4 &7647395246696397622 stripped

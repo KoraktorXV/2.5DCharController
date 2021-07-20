@@ -8,36 +8,59 @@ public class MovementBehavior
     private MovementAttributes attributes;
     private PlayerController ownController;
 
-    private bool isJumping = false;
+    private MovementInformation moveInfos;
+
+    private JumpAktion jumpBuffer;
 
     public MovementBehavior(Rigidbody iniRigidbody, MovementAttributes iniAttributes, PlayerController iniOwnController)
     {
         rigidbody = iniRigidbody;
         attributes = iniAttributes;
         ownController = iniOwnController;
+        moveInfos = new MovementInformation();
     }
 
-    public void ApplyMovement(MovementInformation moveInfo)
+    public void UpdateMovementInfo(MovementInformation newMoveInfos)
     {
-        JumpingBehavior(moveInfo);
-        ApplyHorizontalForces(moveInfo);
+        moveInfos = newMoveInfos;
+
+        if (newMoveInfos.isJumpingInput && jumpBuffer == null)
+        {
+            jumpBuffer = new JumpAktion();
+        }
+    }
+
+    public void ApplyMovement()
+    {
+        JumpingBehavior();
+        ApplyHorizontalForces(moveInfos);
         ApplyHoverForces();
     }
 
-    private void JumpingBehavior(MovementInformation moveInfo) 
-    {
-        if (moveInfo.isJumpingInput && !isJumping)
+    private void JumpingBehavior() 
+     {
+        if (jumpBuffer != null && jumpBuffer.isJumping && rigidbody.velocity.y < 0.0f && !ownController.GetIsOutsideDetectionRange())
         {
-            ApplyJumpingForces();
-            isJumping = true;
-            ownController.GetPlayerSoundEvents().PlaySound((int) SoundEnum.jump, Camera.main.GetComponent<AudioSource>());
+            jumpBuffer = null;
         }
 
-        if (isJumping && rigidbody.velocity.y < 0.0f && !ownController.GetIsOutsideDetectionRange())
+        if (jumpBuffer != null && jumpBuffer.isJumping == false)
         {
-            isJumping = false;
+            //ApplyJumpingForces();
+            jumpBuffer.isJumping = true;
+            ownController.GetPlayerSoundEvents().PlaySound((int)SoundEnum.jump, Camera.main.GetComponent<AudioSource>());
         }
-        
+
+        if (jumpBuffer != null && jumpBuffer.isJumping == true)
+        {
+            if (jumpBuffer.jumpTime < attributes.jumpRaiseTime)
+            {
+                float upVelocety = attributes.jumpRaiseCurve.Evaluate((jumpBuffer.jumpTime / attributes.jumpRaiseTime)) * attributes.maxJumpVelocety;
+                rigidbody.velocity = new Vector3(rigidbody.velocity.x, upVelocety, rigidbody.velocity.z);
+                jumpBuffer.jumpTime += Time.fixedDeltaTime;
+
+            }
+        }
     }
 
     private void ApplyJumpingForces()
@@ -58,11 +81,17 @@ public class MovementBehavior
                 rigidbody.AddForce(moveInfo.inputMovementDir.normalized * attributes.movementForce);
             }
         }
+        else
+        {
+            float dragFactor = (rigidbody.velocity.magnitude / attributes.maxVelocety) * attributes.dragConstand;
+            Vector3 dragForce = -new Vector3(rigidbody.velocity.x, 0, 0).normalized * dragFactor;
+            rigidbody.AddForce(dragForce);
+        }
     }
 
     private void ApplyHoverForces()
     {
-        if (!isJumping && ownController.GetGrundHitPoint() != Vector3.zero)
+        if (jumpBuffer == null && ownController.GetGrundHitPoint() != Vector3.zero)
         {
             Vector3 currentVelocety = rigidbody.velocity;
             float currentDistanceDelta = ownController.GetDistaceToGrund() - attributes.hoverDistancToGrund;

@@ -18,7 +18,6 @@ public class PlayerController : MonoBehaviour
     private SoundEventSystem soundEvents;
 
     private MovementBehavior movementBehavior;
-    private MovementInformation lastMovementInformation;
     private bool isInAir = false;
     private bool isOutsideDetectionRange = false;
     private float distanceToGrund = 0.0f;
@@ -29,19 +28,29 @@ public class PlayerController : MonoBehaviour
         movementBehavior = new MovementBehavior(rigidbody, attributes, this);
     }
 
-    public void UpdatePlayerController(MovementInformation movementInfo)
+    public void UpdateMovementInfo(MovementInformation movementInfo)
     {
-        UpdateController(movementInfo);
-        movementBehavior.ApplyMovement(movementInfo);
+        movementBehavior.UpdateMovementInfo(movementInfo);
     }
 
-    private void UpdateController(MovementInformation movementInfo)
+    public void UpdatePlayerController()
+    {
+        UpdateController();
+        movementBehavior.ApplyMovement();
+        UpdateGraficsController();
+    }
+
+    private void UpdateController()
     {
         UpdateRaycastInfos();
-        lastMovementInformation = new MovementInformation(movementInfo);
-        Debug.Log("isOutsideDetectionRange: " + isOutsideDetectionRange + "\ndistanceToGrund: " + distanceToGrund + "\nisInAir: " + isInAir);
+        //Debug.Log("isOutsideDetectionRange: " + isOutsideDetectionRange + "\ndistanceToGrund: " + distanceToGrund + "\nisInAir: " + isInAir);
     }
 
+    private void UpdateGraficsController()
+    {
+        grafiksController.SetFloorPoint(GetGrundHitPoint());
+        grafiksController.SetRunningSpeed(1/attributes.maxVelocety * rigidbody.velocity.magnitude);
+    }
 
     public void UpdateRaycastInfos()
     {
@@ -63,8 +72,7 @@ public class PlayerController : MonoBehaviour
             isOutsideDetectionRange = true;
         }
     }
-
-
+    
     public bool GetIsInAir()
     {
         return isInAir;

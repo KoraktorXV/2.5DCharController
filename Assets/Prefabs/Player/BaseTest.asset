@@ -13,9 +13,36 @@ MonoBehaviour:
   m_Name: BaseTest
   m_EditorClassIdentifier: 
   maxVelocety: 10
-  movementForce: 20
-  inAirRayCastLenght: 0.5
+  movementForce: 50
+  dragConstand: 30
   jumpForce: 350
+  jumpRaiseTime: 0.4
+  maxJumpVelocety: 10
+  jumpRaiseCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.07064491
+      outSlope: -0.07064491
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.15101297
+    - serializedVersion: 3
+      time: 1.0026855
+      value: 0
+      inSlope: -3.4646697
+      outSlope: -3.4646697
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.04863463
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  inAirRayCastLenght: 0.5
   springConstant: 100
   hoverDistancToGrund: 0.5
   hoverDistancDelta: 0.25
