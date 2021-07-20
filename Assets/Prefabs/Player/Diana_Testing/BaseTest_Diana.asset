@@ -16,8 +16,8 @@ MonoBehaviour:
   movementForce: 50
   dragConstand: 50
   jumpForce: 350
-  jumpRaiseTime: 0.4
-  maxJumpVelocety: 10
+  jumpRaiseTime: 0.6
+  maxJumpVelocety: 5
   jumpRaiseCurve:
     serializedVersion: 2
     m_Curve:
@@ -43,7 +43,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   inAirRayCastLenght: 0.5
-  springConstant: 100
+  springConstant: 1
   hoverDistancToGrund: 0.5
   hoverDistancDelta: 0.25
-  hoverSpringDampener: 0
+  hoverSpringDampener: 10
