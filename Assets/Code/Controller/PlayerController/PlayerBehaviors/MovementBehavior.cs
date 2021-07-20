@@ -33,7 +33,7 @@ public class MovementBehavior
     public void ApplyMovement()
     {
         JumpingBehavior();
-        ApplyHorizontalForces(moveInfos);
+        ApplyHorizontalForces();
         ApplyHoverForces();
     }
 
@@ -68,17 +68,17 @@ public class MovementBehavior
         rigidbody.AddForce(Vector3.up * attributes.jumpForce);        
     }
 
-    private void ApplyHorizontalForces(MovementInformation moveInfo)
+    private void ApplyHorizontalForces()
     {
         Vector3 horizontalVelocity = new Vector3(rigidbody.velocity.x, 0, 0);
-        bool isMoveDirInVelocetyDir = Vector3.Dot(horizontalVelocity.normalized, moveInfo.inputMovementDir) == 1;
+        bool isMoveDirInVelocetyDir = Vector3.Dot(horizontalVelocity.normalized, moveInfos.inputMovementDir) == 1;
         bool isHorizontalVelocityToBig = horizontalVelocity.magnitude > attributes.maxVelocety;
 
-        if (moveInfo.inputMovementDir.magnitude > 0)
+        if (moveInfos.inputMovementDir.magnitude > 0)
         {
             if (!isHorizontalVelocityToBig || (isHorizontalVelocityToBig && !isMoveDirInVelocetyDir))
             {
-                rigidbody.AddForce(moveInfo.inputMovementDir.normalized * attributes.movementForce);
+                rigidbody.AddForce(moveInfos.inputMovementDir.normalized * attributes.movementForce);
             }
         }
         else
