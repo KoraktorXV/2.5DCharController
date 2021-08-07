@@ -50,6 +50,8 @@ public class PlayerController : MonoBehaviour
     {
         grafiksController.SetFloorPoint(GetGrundHitPoint());
         grafiksController.SetRunningSpeed(1/attributes.maxVelocety * rigidbody.velocity.magnitude);
+        grafiksController.SetTrundirection(rigidbody.velocity);
+
     }
 
     public void UpdateRaycastInfos()

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxVelocety: 10
   movementForce: 50
-  dragConstand: 30
+  dragConstand: 150
   jumpForce: 350
   jumpRaiseTime: 0.4
   maxJumpVelocety: 10

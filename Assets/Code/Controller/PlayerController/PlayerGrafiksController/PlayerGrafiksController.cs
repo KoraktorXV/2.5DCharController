@@ -11,6 +11,7 @@ public class PlayerGrafiksController : MonoBehaviour
 
 
     private float currentRunningSpeed = 0;
+    private Vector3 lasteMoveDir = new Vector3();
 
     public void SetAnimation(PlayerJumpAniEnum aniEnum)
     {
@@ -34,5 +35,22 @@ public class PlayerGrafiksController : MonoBehaviour
             footTarget.position = newTarget;
         }
         
+    }
+
+    public void SetTrundirection(Vector3 movementDir)
+    {
+        if (Vector3.Dot(movementDir.normalized, lasteMoveDir) != 1)
+        {
+            if (movementDir.x > 0)
+            {
+                SetAnimation(PlayerJumpAniEnum.turnRigth);
+            }
+            else
+            {
+                SetAnimation(PlayerJumpAniEnum.turnRigth);
+            }
+        }
+
+        lasteMoveDir = movementDir.normalized;
     }
 }

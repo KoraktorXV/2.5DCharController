@@ -83,7 +83,7 @@ public class MovementBehavior
         }
         else
         {
-            float dragFactor = (rigidbody.velocity.magnitude / attributes.maxVelocety) * attributes.dragConstand;
+            float dragFactor = 0.5f * (rigidbody.velocity.magnitude / attributes.maxVelocety) * attributes.dragConstand;
             Vector3 dragForce = -new Vector3(rigidbody.velocity.x, 0, 0).normalized * dragFactor;
             rigidbody.AddForce(dragForce);
         }
