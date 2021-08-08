@@ -12,6 +12,8 @@ public class MovementBehavior
 
     private JumpAktion jumpBuffer;
 
+    private JumpingBuffer jumpBufferClass = new JumpingBuffer();
+
     public MovementBehavior(Rigidbody iniRigidbody, MovementAttributes iniAttributes, PlayerController iniOwnController)
     {
         rigidbody = iniRigidbody;
@@ -37,9 +39,31 @@ public class MovementBehavior
         ApplyHoverForces();
     }
 
-    private void JumpingBehavior() 
+    private void JumpingBehavior()
+    {
+        if (jumpBufferClass.IsAJumpInQueue() &&
+            !ownController.IsInAir() &&
+            !IsJumpBuffer())
+        {
+
+        }
+        if (!jumpBufferClass.Peek().isJumping)
+        {
+
+        }
+        if (jumpBufferClass.Peek().isJumping)
+        {
+
+        }
+    }
+
+    private void JumpingBehavior(int x) 
      {
-        if (jumpBuffer != null && jumpBuffer.isJumping && rigidbody.velocity.y < 0.0f && !ownController.GetIsOutsideDetectionRange())
+        if (jumpBuffer != null && 
+            jumpBuffer.isJumping && 
+            rigidbody.velocity.y < 0.0f && 
+            !ownController.GetIsOutsideDetectionRange() &&
+            !IsJumpBuffer())
         {
             jumpBuffer = null;
         }
@@ -58,14 +82,8 @@ public class MovementBehavior
                 float upVelocety = attributes.jumpRaiseCurve.Evaluate((jumpBuffer.jumpTime / attributes.jumpRaiseTime)) * attributes.maxJumpVelocety;
                 rigidbody.velocity = new Vector3(rigidbody.velocity.x, upVelocety, rigidbody.velocity.z);
                 jumpBuffer.jumpTime += Time.fixedDeltaTime;
-
             }
         }
-    }
-
-    private void ApplyJumpingForces()
-    {
-        rigidbody.AddForce(Vector3.up * attributes.jumpForce);        
     }
 
     private void ApplyHorizontalForces()
@@ -100,4 +118,63 @@ public class MovementBehavior
             rigidbody.AddForce(Vector3.up * (springForce - rigidbody.velocity.y * attributes.hoverSpringDampener));
         }
     }
+
+    private bool IsJumpBuffer()
+    {
+        if (jumpBufferClass.IsAJumpInQueue() && ownController.IsInAir())
+        {
+            if (Time.realtimeSinceStartup - jumpBufferClass.Peek().GetTimeStamp() < attributes.jumpBufferTime)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private bool IsJumpBuffer(int x)
+    {
+        if (jumpBuffer != null && !ownController.IsInAir())
+        {
+            if (Time.realtimeSinceStartup - jumpBuffer.GetTimeStamp() < attributes.jumpBufferTime)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private bool IsCoyoteTime()
+    {
+        if (jumpBuffer != null && ownController.IsInAir())
+        {
+            if (Time.realtimeSinceStartup - jumpBuffer.GetTimeStamp() < attributes.coyoteTime)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
+
+

@@ -75,9 +75,22 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    public bool GetIsInAir()
+    public bool IsInAir()
     {
         return isInAir;
+    }
+
+    public bool IsFalling()
+    {
+        if (IsInAir() &&
+            rigidbody.velocity.y < 0.0f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public bool GetIsOutsideDetectionRange()
