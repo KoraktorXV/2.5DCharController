@@ -26,6 +26,7 @@ public class InputController
         }
         else
         {
+            /*
             if (Input.GetAxis("Horizontal") < -0.1f)
             {
                 currentMovementInfo.inputMovementDir += Vector3.left;
@@ -34,9 +35,12 @@ public class InputController
             {
                 currentMovementInfo.inputMovementDir += Vector3.right;
             }
+            */
         }
 
         currentMovementInfo.inputMovementDir.Normalize();
+
+        Debug.Log(currentMovementInfo.inputMovementDir);
     }
 
     private void UpdateJumpingInfo()
