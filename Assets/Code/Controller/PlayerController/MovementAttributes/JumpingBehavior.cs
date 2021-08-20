@@ -10,7 +10,8 @@ public class JumpingBehavior
     private MovementInformation moveInfos;
 
     private JumpingBuffer jumpBuffer = new JumpingBuffer();
-    private float timeSinceFall = 0.0f;
+    private JumpAktion lastJumpAtempt;
+    private float lastTimeOnGrund = 0.0f;
 
     public JumpingBehavior(Rigidbody iniRigidbody, MovementAttributes iniAttributes, PlayerController iniOwnController)
     {
@@ -36,15 +37,16 @@ public class JumpingBehavior
     {
         if (newMoveInfos.isJumpingInput)
         {
+            lastJumpAtempt = new JumpAktion();
+
             if (!ownController.IsInAir())
             {
                 Debug.Log("JumpingAkion was Added at: " + Time.realtimeSinceStartup);
-                jumpBuffer.Queue(new JumpAktion());
+                jumpBuffer.Queue(lastJumpAtempt);
             }
-            else if (IsCoyoteTime())
+            else if (IsCoyoteTime() || IsJumpBuffer())
             {
-                Debug.Log("CoyoteTime was Added at: " + Time.realtimeSinceStartup);
-                jumpBuffer.Queue(new JumpAktion());
+                jumpBuffer.Queue(lastJumpAtempt);
             }
         }
     }
@@ -69,13 +71,9 @@ public class JumpingBehavior
 
     private void TrackCoyoteTime()
     {
-        if (ownController.IsFalling() && ownController.IsInAir() && !jumpBuffer.IsAJumpInQueue() && timeSinceFall == 0.0f)
+        if (!ownController.IsInAir())
         {
-            timeSinceFall = Time.realtimeSinceStartup;
-        }
-        else
-        {
-            timeSinceFall = 0.0f;
+            lastTimeOnGrund = Time.realtimeSinceStartup;
         }
     }
 
@@ -101,10 +99,11 @@ public class JumpingBehavior
 
     private bool IsJumpBuffer()
     {
-        if (jumpBuffer.IsAJumpInQueue() && ownController.IsInAir())
+        if (!ownController.IsInAir())
         {
-            if (Time.realtimeSinceStartup - jumpBuffer.Peek().GetTimeStamp() < attributes.jumpBufferTime)
+            if (Time.realtimeSinceStartup - lastJumpAtempt.GetTimeStamp() < attributes.jumpBufferTime)
             {
+                Debug.Log("JumpBuffer was Added at: " + Time.realtimeSinceStartup);
                 return true;
             }
             else
@@ -122,8 +121,9 @@ public class JumpingBehavior
     {
         if (ownController.IsFalling())
         {
-            if (Time.realtimeSinceStartup - timeSinceFall < attributes.coyoteTime)
+            if (Time.realtimeSinceStartup - lastTimeOnGrund < attributes.coyoteTime)
             {
+                Debug.Log("CoyoteTime was Added at: " + Time.realtimeSinceStartup);
                 return true;
             }
             else
