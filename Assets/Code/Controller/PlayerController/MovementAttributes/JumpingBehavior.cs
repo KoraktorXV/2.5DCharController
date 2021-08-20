@@ -41,13 +41,17 @@ public class JumpingBehavior
 
             if (!ownController.IsInAir())
             {
-                Debug.Log("JumpingAkion was Added at: " + Time.realtimeSinceStartup);
+                //Debug.Log("JumpingAkion was Added at: " + Time.realtimeSinceStartup);
                 jumpBuffer.Queue(lastJumpAtempt);
             }
-            else if (IsCoyoteTime() || IsJumpBuffer())
+            else if (IsCoyoteTime())
             {
                 jumpBuffer.Queue(lastJumpAtempt);
             }
+        }
+        if (IsJumpBuffer())
+        {
+            jumpBuffer.Queue(new JumpAktion());
         }
     }
 
@@ -99,7 +103,7 @@ public class JumpingBehavior
 
     private bool IsJumpBuffer()
     {
-        if (!ownController.IsInAir())
+        if (!ownController.IsInAir() && !jumpBuffer.IsAJumpInQueue() && lastJumpAtempt !=null)
         {
             if (Time.realtimeSinceStartup - lastJumpAtempt.GetTimeStamp() < attributes.jumpBufferTime)
             {
