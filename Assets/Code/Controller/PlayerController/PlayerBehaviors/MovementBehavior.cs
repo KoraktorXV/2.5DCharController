@@ -10,9 +10,9 @@ public class MovementBehavior
 
     private MovementInformation moveInfos;
 
-    private JumpAktion jumpBuffer;
+    private JumpAktion OLDjumpBuffer;
 
-    private JumpingBuffer jumpBufferClass = new JumpingBuffer();
+    private JumpingBuffer jumpBuffer = new JumpingBuffer();
 
     public MovementBehavior(Rigidbody iniRigidbody, MovementAttributes iniAttributes, PlayerController iniOwnController)
     {
@@ -26,62 +26,74 @@ public class MovementBehavior
     {
         moveInfos = newMoveInfos;
 
-        if (newMoveInfos.isJumpingInput && jumpBuffer == null)
+        if (newMoveInfos.isJumpingInput && OLDjumpBuffer == null)
         {
-            jumpBuffer = new JumpAktion();
+            OLDjumpBuffer = new JumpAktion();
         }
     }
 
     public void ApplyMovement()
     {
-        JumpingBehavior();
+        JumpingBehavior(1);
         ApplyHorizontalForces();
         ApplyHoverForces();
     }
 
     private void JumpingBehavior()
     {
-        if (jumpBufferClass.IsAJumpInQueue() &&
-            !ownController.IsInAir() &&
-            !IsJumpBuffer())
+        if (jumpBuffer.IsAJumpInQueue())
         {
+            if (!ownController.IsInAir() &&
+                !IsJumpBuffer() &&
+                !IsCoyoteTime())
+            {
+                jumpBuffer.Dequeue();
+            }
 
-        }
-        if (!jumpBufferClass.Peek().isJumping)
-        {
+            if (!jumpBuffer.Peek().isJumping &&
+                !ownController.IsInAir())
+            {
+                jumpBuffer.Peek().isJumping = true;
+                ownController.GetPlayerSoundEvents().PlaySound((int)SoundEnum.jump, Camera.main.GetComponent<AudioSource>());
+            }
 
-        }
-        if (jumpBufferClass.Peek().isJumping)
-        {
-
-        }
+            if (jumpBuffer.Peek().isJumping)
+            {
+                if (jumpBuffer.Peek().jumpTime < attributes.jumpRaiseTime)
+                {
+                    float upVelocety = attributes.jumpRaiseCurve.Evaluate((jumpBuffer.Peek().jumpTime / attributes.jumpRaiseTime)) * attributes.maxJumpVelocety;
+                    rigidbody.velocity = new Vector3(rigidbody.velocity.x, upVelocety, rigidbody.velocity.z);
+                    jumpBuffer.Peek().jumpTime += Time.fixedDeltaTime;
+                }
+            }
+        }        
     }
 
     private void JumpingBehavior(int x) 
      {
-        if (jumpBuffer != null && 
-            jumpBuffer.isJumping && 
+        if (OLDjumpBuffer != null && 
+            OLDjumpBuffer.isJumping && 
             rigidbody.velocity.y < 0.0f && 
             !ownController.GetIsOutsideDetectionRange() &&
-            !IsJumpBuffer())
+            !IsJumpBuffer(1))
         {
-            jumpBuffer = null;
+            OLDjumpBuffer = null;
         }
 
-        if (jumpBuffer != null && jumpBuffer.isJumping == false)
+        if (OLDjumpBuffer != null && OLDjumpBuffer.isJumping == false)
         {
             //ApplyJumpingForces();
-            jumpBuffer.isJumping = true;
+            OLDjumpBuffer.isJumping = true;
             ownController.GetPlayerSoundEvents().PlaySound((int)SoundEnum.jump, Camera.main.GetComponent<AudioSource>());
         }
 
-        if (jumpBuffer != null && jumpBuffer.isJumping == true)
+        if (OLDjumpBuffer != null && OLDjumpBuffer.isJumping == true)
         {
-            if (jumpBuffer.jumpTime < attributes.jumpRaiseTime)
+            if (OLDjumpBuffer.jumpTime < attributes.jumpRaiseTime)
             {
-                float upVelocety = attributes.jumpRaiseCurve.Evaluate((jumpBuffer.jumpTime / attributes.jumpRaiseTime)) * attributes.maxJumpVelocety;
+                float upVelocety = attributes.jumpRaiseCurve.Evaluate((OLDjumpBuffer.jumpTime / attributes.jumpRaiseTime)) * attributes.maxJumpVelocety;
                 rigidbody.velocity = new Vector3(rigidbody.velocity.x, upVelocety, rigidbody.velocity.z);
-                jumpBuffer.jumpTime += Time.fixedDeltaTime;
+                OLDjumpBuffer.jumpTime += Time.fixedDeltaTime;
             }
         }
     }
@@ -109,7 +121,7 @@ public class MovementBehavior
 
     private void ApplyHoverForces()
     {
-        if (jumpBuffer == null && ownController.GetGrundHitPoint() != Vector3.zero)
+        if (OLDjumpBuffer == null && ownController.GetGrundHitPoint() != Vector3.zero)
         {
             Vector3 currentVelocety = rigidbody.velocity;
             float currentDistanceDelta = ownController.GetDistaceToGrund() - attributes.hoverDistancToGrund;
@@ -121,9 +133,9 @@ public class MovementBehavior
 
     private bool IsJumpBuffer()
     {
-        if (jumpBufferClass.IsAJumpInQueue() && ownController.IsInAir())
+        if (jumpBuffer.IsAJumpInQueue() && ownController.IsInAir())
         {
-            if (Time.realtimeSinceStartup - jumpBufferClass.Peek().GetTimeStamp() < attributes.jumpBufferTime)
+            if (Time.realtimeSinceStartup - jumpBuffer.Peek().GetTimeStamp() < attributes.jumpBufferTime)
             {
                 return true;
             }
@@ -140,9 +152,9 @@ public class MovementBehavior
 
     private bool IsJumpBuffer(int x)
     {
-        if (jumpBuffer != null && !ownController.IsInAir())
+        if (OLDjumpBuffer != null && !ownController.IsInAir())
         {
-            if (Time.realtimeSinceStartup - jumpBuffer.GetTimeStamp() < attributes.jumpBufferTime)
+            if (Time.realtimeSinceStartup - OLDjumpBuffer.GetTimeStamp() < attributes.jumpBufferTime)
             {
                 return true;
             }
@@ -159,9 +171,9 @@ public class MovementBehavior
 
     private bool IsCoyoteTime()
     {
-        if (jumpBuffer != null && ownController.IsInAir())
+        if (!jumpBuffer.Peek().isJumping && ownController.IsInAir())
         {
-            if (Time.realtimeSinceStartup - jumpBuffer.GetTimeStamp() < attributes.coyoteTime)
+            if (Time.realtimeSinceStartup - jumpBuffer.Peek().GetTimeStamp() < attributes.coyoteTime)
             {
                 return true;
             }
