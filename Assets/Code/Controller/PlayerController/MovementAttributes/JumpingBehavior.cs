@@ -36,8 +36,16 @@ public class JumpingBehavior
     {
         if (newMoveInfos.isJumpingInput)
         {
-            Debug.Log("JumpingAkion was Added at: " + Time.realtimeSinceStartup);
-            jumpBuffer.Queue(new JumpAktion());
+            if (!ownController.IsInAir())
+            {
+                Debug.Log("JumpingAkion was Added at: " + Time.realtimeSinceStartup);
+                jumpBuffer.Queue(new JumpAktion());
+            }
+            else if (IsCoyoteTime())
+            {
+                Debug.Log("CoyoteTime was Added at: " + Time.realtimeSinceStartup);
+                jumpBuffer.Queue(new JumpAktion());
+            }
         }
     }
 
@@ -48,29 +56,11 @@ public class JumpingBehavior
             if (jumpBuffer.Peek().isJumping)
             {
                 ApplyJumping();
-                /*
-                if (!ownController.IsInAir())
-                {
-                    if (IsJumpBuffer() && jumpBuffer.PeekDeeper() != null)
-                    {
-                        jumpBuffer.PeekDeeper().isJumping = true;
-                    }
-                }
-                */
+
             }
             else
             {
-                if (ownController.IsInAir())
-                {
-                    if (IsCoyoteTime())
-                    {
-                        TriggerJump();
-                    }
-                }
-                else
-                {
-                    TriggerJump();
-                }
+                TriggerJump();
             }
         }
 
@@ -130,19 +120,11 @@ public class JumpingBehavior
 
     private bool IsCoyoteTime()
     {
-        if (jumpBuffer.IsAJumpInQueue() && ownController.IsFalling())
+        if (ownController.IsFalling())
         {
-            if (!jumpBuffer.Peek().isJumping)
+            if (Time.realtimeSinceStartup - timeSinceFall < attributes.coyoteTime)
             {
-                if (Time.realtimeSinceStartup - timeSinceFall < attributes.coyoteTime)
-                {
-                    Debug.Log("DeltaTime for CoyoteTime was: " + (Time.realtimeSinceStartup - timeSinceFall));
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
             }
             else
             {
