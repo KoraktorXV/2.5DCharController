@@ -14,6 +14,8 @@ public class MovementAttributes : ScriptableObject
     public float jumpRaiseTime = 0.25f;
     public float maxJumpVelocety = 10.0f;
     public AnimationCurve jumpRaiseCurve;
+    public float jumpBufferTime = 0.66f;
+    public float coyoteTime = 0.66f;
     [Header("Hovering")]
     public float inAirRayCastLenght = 0.5f;
     public float springConstant = 100.0f;

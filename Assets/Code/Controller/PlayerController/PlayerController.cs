@@ -50,6 +50,8 @@ public class PlayerController : MonoBehaviour
     {
         grafiksController.SetFloorPoint(GetGrundHitPoint());
         grafiksController.SetRunningSpeed(1/attributes.maxVelocety * rigidbody.velocity.magnitude);
+        grafiksController.SetTrundirection(rigidbody.velocity);
+
     }
 
     public void UpdateRaycastInfos()
@@ -73,9 +75,22 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    public bool GetIsInAir()
+    public bool IsInAir()
     {
         return isInAir;
+    }
+
+    public bool IsFalling()
+    {
+        if (IsInAir() &&
+            rigidbody.velocity.y < 0.0f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public bool GetIsOutsideDetectionRange()

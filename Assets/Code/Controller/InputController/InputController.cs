@@ -15,6 +15,7 @@ public class InputController
     {
         currentMovementInfo.inputMovementDir = Vector3.zero;
 
+
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             currentMovementInfo.inputMovementDir += Vector3.left;
@@ -23,13 +24,24 @@ public class InputController
         {
             currentMovementInfo.inputMovementDir += Vector3.right;
         }
+        else
+        {
+            if (Input.GetAxis("Horizontal") < -0.1f)
+            {
+                currentMovementInfo.inputMovementDir += Vector3.left;
+            }
+            else if (Input.GetAxis("Horizontal") > 0.1f)
+            {
+                currentMovementInfo.inputMovementDir += Vector3.right;
+            }
+        }
 
         currentMovementInfo.inputMovementDir.Normalize();
     }
 
     private void UpdateJumpingInfo()
     {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetButton("Jump"))
         {
             currentMovementInfo.isJumpingInput = true;
         }

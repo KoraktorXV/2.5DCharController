@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxVelocety: 10
   movementForce: 50
-  dragConstand: 30
+  dragConstand: 150
   jumpForce: 350
   jumpRaiseTime: 0.4
   maxJumpVelocety: 10
@@ -42,6 +42,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  jumpBufferTime: 0.66
+  coyoteTime: 0.66
   inAirRayCastLenght: 0.5
   springConstant: 100
   hoverDistancToGrund: 0.5
