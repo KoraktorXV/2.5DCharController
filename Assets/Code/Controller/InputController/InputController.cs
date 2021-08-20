@@ -5,6 +5,9 @@ using UnityEngine;
 public class InputController 
 {
     private MovementInformation currentMovementInfo = new MovementInformation();
+    private float jumpTime = 0.0f;
+    private float jumpCoolDown = 0.2f;
+
     public void UpdateInput()
     {
         UpdateMovementDirection();
@@ -39,15 +42,14 @@ public class InputController
         }
 
         currentMovementInfo.inputMovementDir.Normalize();
-
-        Debug.Log(currentMovementInfo.inputMovementDir);
     }
 
     private void UpdateJumpingInfo()
     {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetButton("Jump"))
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow)))
         {
             currentMovementInfo.isJumpingInput = true;
+            jumpTime = Time.realtimeSinceStartup;
         }
         else
         {
@@ -58,5 +60,17 @@ public class InputController
     public MovementInformation GetMovementInfo()
     {
         return currentMovementInfo;
+    }
+
+    public bool IsJumpInputFree()
+    {
+        if (Time.realtimeSinceStartup - jumpTime > jumpCoolDown)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

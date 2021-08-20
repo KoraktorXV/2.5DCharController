@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class JumpingBuffer
 {
-    List<JumpAktion> jumpQueue = new List<JumpAktion>(2);
+    List<JumpAktion> jumpQueue = new List<JumpAktion>();
 
     public JumpingBuffer()
     {
-        jumpQueue.Capacity = 2;
+        //jumpQueue.Capacity = 2;
     }
 
     public void Queue(JumpAktion jumpToQueue)
@@ -49,6 +49,18 @@ public class JumpingBuffer
         }
     }
 
+    public JumpAktion PeekDeeper()
+    {
+        if (jumpQueue.Count > 1)
+        {
+            return jumpQueue[1];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     public bool IsAJumpInQueue()
     {
         if (jumpQueue.Count > 0)
@@ -59,5 +71,10 @@ public class JumpingBuffer
         {
             return false;
         }
+    }
+
+    public int GetCountOfQueue()
+    {
+        return jumpQueue.Count;
     }
 }
