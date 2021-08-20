@@ -113,14 +113,6 @@ public class PlayerController : MonoBehaviour
         return soundEvents;
     }
 
-    private void OnValidate()
-    {
-        if (movementBehavior != null)
-        {
-            movementBehavior.SetAttributes(attributes);
-        }
-    }
-
     private void OnDrawGizmos()
     {
         if (rigidbody && attributes)
