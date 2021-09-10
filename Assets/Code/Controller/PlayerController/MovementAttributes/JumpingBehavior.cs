@@ -44,6 +44,10 @@ public class JumpingBehavior
                 //Debug.Log("JumpingAkion was Added at: " + Time.realtimeSinceStartup);
                 jumpBuffer.Queue(lastJumpAtempt);
             }
+            else if (ownController.IsWallsliding())
+            {
+                jumpBuffer.Queue(lastJumpAtempt);
+            }
             else if (IsCoyoteTime())
             {
                 jumpBuffer.Queue(lastJumpAtempt);

@@ -33,6 +33,7 @@ public class MovementBehavior
         jumpingBehavior.ApplyJumpingBehavior();
         ApplyHorizontalForces();
         ApplyHoverForces();
+        ApplyVertictalForces();
     }
 
     private void ApplyHorizontalForces()
@@ -65,6 +66,14 @@ public class MovementBehavior
             float springForce = -attributes.springConstant * currentDistanceDelta;
 
             rigidbody.AddForce(Vector3.up * (springForce - rigidbody.velocity.y * attributes.hoverSpringDampener));
+        }
+    }
+
+    private void ApplyVertictalForces()
+    {
+        if (ownController.IsWallsliding() && !jumpingBehavior.IsJumpInQueue())
+        {
+            rigidbody.velocity *= attributes.wallSlipinis;
         }
     }
 

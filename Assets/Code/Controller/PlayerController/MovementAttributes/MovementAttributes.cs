@@ -22,4 +22,8 @@ public class MovementAttributes : ScriptableObject
     public float hoverDistancToGrund = 0.5f;
     public float hoverDistancDelta = 0.25f;
     public float hoverSpringDampener = 15.0f;
+    [Header("Wall Slide")]
+    public float wallDetectionSorceOffset = 0.2f;
+    public float wallDetectionLenght = 0.5f;
+    public float wallSlipinis = 0.2f;
 }
