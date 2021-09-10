@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colider: {fileID: 338967647619369948}
   rigidbody: {fileID: 3553237832679566408}
-  attributes: {fileID: 11400000, guid: 686a2c8aba51152478bea3ca3d30243c, type: 2}
+  attributes: {fileID: 11400000, guid: 8e030526d4e58b247b814046946c8e18, type: 2}
   physiksUtilityObj: {fileID: 4760769144574960648}
   grafiksController: {fileID: 7370260822454453115}
   soundEvents: {fileID: 11400000, guid: 452f262e6da7c7946b8ef3150309dc68, type: 2}

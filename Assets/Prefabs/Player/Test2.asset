@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab0fdc48a3e3dee46848904aefc45f9a, type: 3}
-  m_Name: BaseTest
+  m_Name: Test2
   m_EditorClassIdentifier: 
-  maxVelocety: 10
+  maxVelocety: 15
   movementForce: 50
   dragConstand: 150
   jumpForce: 350
-  jumpRaiseTime: 0.4
+  jumpRaiseTime: 0.5
   maxJumpVelocety: 10
   jumpRaiseCurve:
     serializedVersion: 2
@@ -24,26 +24,35 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -0.07064491
-      outSlope: -0.07064491
-      tangentMode: 0
+      inSlope: -0.39999998
+      outSlope: -0.39999998
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.15101297
+      outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1.0026855
-      value: 0
-      inSlope: -3.4646697
-      outSlope: -3.4646697
+      time: 0.5
+      value: 0.8
+      inSlope: -0.5444778
+      outSlope: -0.5444778
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.04863463
+      inWeight: 0.13157892
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1.6
+      outSlope: -1.6
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  jumpBufferTime: 0.3
-  coyoteTime: 0.3
+  jumpBufferTime: 0.33
+  coyoteTime: 0.33
   inAirRayCastLenght: 0.5
   springConstant: 100
   hoverDistancToGrund: 0.5
