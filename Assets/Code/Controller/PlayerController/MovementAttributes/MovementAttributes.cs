@@ -25,5 +25,7 @@ public class MovementAttributes : ScriptableObject
     [Header("Wall Slide")]
     public float wallDetectionSorceOffset = 0.2f;
     public float wallDetectionLenght = 0.5f;
-    public float wallSlipinis = 0.2f;
+    public float maxWallslidingVelocity = 1.0f;
+    public float wallslideGripStrengthTime = 2.0f;
+    public AnimationCurve wallslideGripStrength;
 }

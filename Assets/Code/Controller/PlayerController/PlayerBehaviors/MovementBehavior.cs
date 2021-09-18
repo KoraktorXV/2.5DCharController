@@ -12,6 +12,7 @@ public class MovementBehavior
 
     private MovementInformation moveInfos;
 
+
     public MovementBehavior(Rigidbody iniRigidbody, MovementAttributes iniAttributes, PlayerController iniOwnController)
     {
         rigidbody = iniRigidbody;
@@ -73,7 +74,7 @@ public class MovementBehavior
     {
         if (ownController.IsWallsliding() && !jumpingBehavior.IsJumpInQueue())
         {
-            rigidbody.velocity *= attributes.wallSlipinis;
+            rigidbody.velocity = new Vector3(rigidbody.velocity.x, -attributes.maxWallslidingVelocity, rigidbody.velocity.z);
         }
     }
 
