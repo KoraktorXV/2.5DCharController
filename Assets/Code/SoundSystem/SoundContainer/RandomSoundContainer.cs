@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "RandomSoundContainer", menuName = "ScriptableObjects/Sound/RandomSoundContainer", order = 5)]
-public class RandomSounContainer : BaseSoundContainer
+public class RandomSoundContainer : BaseSoundContainer
 {
     private int lastPlayedIndex = 0;
 
