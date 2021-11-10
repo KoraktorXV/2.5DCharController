@@ -8,45 +8,76 @@ public class MovementBehavior
     private MovementAttributes attributes;
     private PlayerController ownController;
 
+    private JumpingBehavior jumpingBehavior;
+
+    private MovementInformation moveInfos;
+
+
     public MovementBehavior(Rigidbody iniRigidbody, MovementAttributes iniAttributes, PlayerController iniOwnController)
     {
         rigidbody = iniRigidbody;
         attributes = iniAttributes;
         ownController = iniOwnController;
+        jumpingBehavior = new JumpingBehavior(iniRigidbody, iniAttributes, iniOwnController);
+        moveInfos = new MovementInformation();
     }
 
-    public void ApplyMovement(MovementInformation moveInfo)
+    public void UpdateMovementInfo(MovementInformation newMoveInfos)
     {
-        ApplyForces(moveInfo);
+        moveInfos = newMoveInfos;
+
+        jumpingBehavior.UpdateJumpingBehavior(newMoveInfos);
     }
 
-    private void ApplyForces(MovementInformation moveInfo)
+    public void ApplyMovement()
     {
-        if (moveInfo.isJumping)
-        {
-             rigidbody.AddForce(Vector3.up * attributes.jumpForce);
+        jumpingBehavior.ApplyJumpingBehavior();
+        ApplyHorizontalForces();
+        ApplyHoverForces();
+        ApplyVertictalForces();
+    }
 
-            moveInfo.isJumping = false;
-        }
-
+    private void ApplyHorizontalForces()
+    {
         Vector3 horizontalVelocity = new Vector3(rigidbody.velocity.x, 0, 0);
-        bool isMoveDirInVelocetyDir = Vector3.Dot(horizontalVelocity.normalized, moveInfo.inputMovementDir) == 1;
+        bool isMoveDirInVelocetyDir = Vector3.Dot(horizontalVelocity.normalized, moveInfos.inputMovementDir) == 1;
         bool isHorizontalVelocityToBig = horizontalVelocity.magnitude > attributes.maxVelocety;
 
-        if (moveInfo.inputMovementDir.magnitude > 0)
+        if (moveInfos.inputMovementDir.magnitude > 0)
         {
             if (!isHorizontalVelocityToBig || (isHorizontalVelocityToBig && !isMoveDirInVelocetyDir))
             {
-                rigidbody.AddForce(moveInfo.inputMovementDir.normalized * attributes.movementForce);
-            }            
+                rigidbody.AddForce(moveInfos.inputMovementDir.normalized * attributes.movementForce);
+            }
+        }
+        else
+        {
+            float dragFactor = 0.5f * (rigidbody.velocity.magnitude / attributes.maxVelocety) * attributes.dragConstand;
+            Vector3 dragForce = -new Vector3(rigidbody.velocity.x, 0, 0).normalized * dragFactor;
+            rigidbody.AddForce(dragForce);
         }
     }
 
-    private void LimitVelocety()
+    private void ApplyHoverForces()
     {
-        if (rigidbody.velocity.magnitude > attributes.maxVelocety)
+        if (!jumpingBehavior.IsJumpInQueue() && ownController.GetGrundHitPoint() != Vector3.zero)
         {
-            rigidbody.velocity = rigidbody.velocity.normalized * attributes.maxVelocety;
+            Vector3 currentVelocety = rigidbody.velocity;
+            float currentDistanceDelta = ownController.GetDistaceToGrund() - attributes.hoverDistancToGrund;
+            float springForce = -attributes.springConstant * currentDistanceDelta;
+
+            rigidbody.AddForce(Vector3.up * (springForce - rigidbody.velocity.y * attributes.hoverSpringDampener));
         }
     }
+
+    private void ApplyVertictalForces()
+    {
+        if (ownController.IsWallsliding() && !jumpingBehavior.IsJumpInQueue())
+        {
+            rigidbody.velocity = new Vector3(rigidbody.velocity.x, -attributes.maxWallslidingVelocity, rigidbody.velocity.z);
+        }
+    }
+
 }
+
+
