@@ -35,13 +35,12 @@ public class JumpingBehavior
 
     public void UpdateJumpingBehavior(MovementInformation newMoveInfos)
     {
-        if (newMoveInfos.isJumpingInput)
+        if (newMoveInfos.isJumpingInput && !jumpBuffer.IsAJumpInQueue())
         {
             lastJumpAtempt = new JumpAktion();
 
             if (!ownController.IsInAir())
             {
-                //Debug.Log("JumpingAkion was Added at: " + Time.realtimeSinceStartup);
                 jumpBuffer.Queue(lastJumpAtempt);
             }
             else if (ownController.IsWallsliding())
@@ -66,7 +65,6 @@ public class JumpingBehavior
             if (jumpBuffer.Peek().isJumping)
             {
                 ApplyJumping();
-
             }
             else
             {
