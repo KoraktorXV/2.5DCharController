@@ -8,7 +8,6 @@ public class InputController
 
     PlayerInputaktions inputAktions = new PlayerInputaktions();
 
-
     public InputController()
     {
         inputAktions.Player.Enable();
@@ -28,8 +27,7 @@ public class InputController
     }
 
     private void UpdateJumpingInfo()
-    {
-        Debug.Log(inputAktions.Player.Jumping.ReadValue<float>());
+    {               
         if (inputAktions.Player.Jumping.ReadValue<float>() == 1)
         {
             currentMovementInfo.isJumpingInput = true;
